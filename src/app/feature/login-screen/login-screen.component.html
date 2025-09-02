@@ -1,0 +1,25 @@
+<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+    <div class="card shadow-lg p-4 login-card">
+        <h3 class="text-center mb-4 header-logo">QuickPick Notes</h3>
+        <form (submit)="onLogin($event)" autocomplete="off">
+            <!-- Username -->
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" placeholder="Enter username" required
+                    [value]="username()" #usernameRef (input)="username.set(usernameRef.value)" />
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" placeholder="Enter password" required
+                    [value]="password()" #passwordRef (input)="password.set(passwordRef.value)" />
+            </div>
+
+            <!-- Login Button -->
+            <button type="submit" class="btn btn-gradient w-100">
+                Login
+            </button>
+        </form>
+    </div>
+</div>
