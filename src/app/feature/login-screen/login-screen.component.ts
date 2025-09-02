@@ -1,4 +1,6 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../../core/services/auth service/auth.service';
 
 @Component({
   selector: 'app-login-screen',
@@ -10,6 +12,8 @@ import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 })
 export class LoginScreenComponent {
 
+  constructor(private router: Router, private auth: AuthService) { }
+
   username = signal('');
   password = signal('');
 
@@ -17,6 +21,17 @@ export class LoginScreenComponent {
     event.preventDefault(); // Prevent default form submission behavior
     console.log('Username:', this.username());
     console.log('Password:', this.password());
-    // Add your login logic here
+
+    if (this.password() == 'test') {
+      setTimeout(() => {
+        console.log('Navigating to dashboard...');
+        this.navigateToDashboard();
+      }, 5000);
+    }
+  }
+
+  navigateToDashboard() {
+    this.auth.login();
+    this.router.navigate(['/notes']);
   }
 }
