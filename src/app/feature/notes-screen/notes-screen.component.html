@@ -15,12 +15,13 @@
         <button class="btn btn-sm me-1 btn-format" (click)="formatText('underline')"><u>U</u></button>
         <button class="btn btn-custom-gradient" (click)="saveNote()">Save</button>
       </div>
-      <div
+      <textarea
         class="form-control"
         contenteditable="true"
-        [(innerText)]="note"
+        [(ngModel)]="note"
         (input)="checkLength()"
-      ></div>
+        placeholder="Type your notes here..."
+      ></textarea>
       <div class="text-muted text-end mt-1">{{ charCount }} / {{ maxChars }}</div>
     </div>
 
@@ -34,10 +35,12 @@
     </div>
 
     <div *ngIf="reorganizedText" class="card mt-4 p-3">
-      <div class="d-flex justify-content-between">
+    <div class="d-flex justify-content-between">
         <h5>Re-organized Notes</h5>
-        <button class="btn copy-btn" (click)="copyText()">{{ copied ? 'Copied!' : 'Copy' }}</button>
-      </div>
+        <button class="btn btn-custom-gradient mb-2" (click)="organizeWithInsights()">Generate Key Insights</button>
+        <button class="btn btn-custom-gradient mb-2" (click)="copyText()">{{ copied ? 'Copied!' : 'Copy' }}</button>
+    </div>
+    <br>
       <div class="formatted-text-output">{{ reorganizedText }}</div>
     </div>
   </div>
