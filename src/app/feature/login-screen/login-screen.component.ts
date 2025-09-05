@@ -32,6 +32,6 @@ export class LoginScreenComponent {
 
   navigateToDashboard() {
     this.auth.login();
-    this.router.navigate(['/notes']);
+    this.router.navigate(['/notes'], { replaceUrl: true });
   }
 }
