@@ -1,18 +1,20 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { FormsModule } from '@angular/forms';
+import { TypingEffectDirective } from './typing-effect.directive';
+import { MarkdownComponent } from 'ngx-markdown';
 
 const genAI = new GoogleGenerativeAI('AIzaSyDJLT3-o-pgaBJtAl_T2LgW3WAh5RN0nwk');
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 @Component({
   selector: 'app-notes-screen',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,],
   templateUrl: './notes-screen.component.html',
   styleUrl: './notes-screen.component.css'
 })
-export class NotesScreenComponent {
+export class NotesScreenComponent implements OnInit{
 
   note: string = '';
   charCount: number = 0;
@@ -21,16 +23,17 @@ export class NotesScreenComponent {
   isLoading = false;
   copied = false;
   message: { text: string; type: string } | null = null;
+  username: string = '';
+
+   ngOnInit(): void {
+     this.username = sessionStorage.getItem('username') || '';
+  }
 
   checkLength() {
     this.charCount = this.note.length;
     if (this.charCount > this.maxChars) {
       this.note = this.note.slice(0, this.maxChars);
     }
-  }
-
-  formatText(command: string) {
-    document.execCommand(command, false, '');
   }
 
   async reorganizeNotes() {
@@ -52,8 +55,8 @@ export class NotesScreenComponent {
     }, 500);
   }
 
-  organizeWithInsights(){
-    if(this.reorganizedText.trim()){
+  organizeWithInsights() {
+    if (this.reorganizedText.trim()) {
 
       setTimeout(async () => {
         this.isLoading = true;
@@ -85,5 +88,9 @@ export class NotesScreenComponent {
   showMessage(text: string, type: string) {
     this.message = { text, type };
     setTimeout(() => (this.message = null), 3000);
+  }
+
+  onTypingUpdate(typed: string) {
+    this.reorganizedText = typed;
   }
 }

@@ -21,6 +21,7 @@ export class LoginScreenComponent {
     event.preventDefault(); // Prevent default form submission behavior
     console.log('Username:', this.username());
     console.log('Password:', this.password());
+    sessionStorage.setItem('username', this.username());
 
     if (this.password() == 'test') {
       setTimeout(() => {

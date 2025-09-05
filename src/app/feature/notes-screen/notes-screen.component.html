@@ -5,23 +5,16 @@
 
   <div class="card p-4">
     <h1 class="text-center mb-4" style="color: #9952d6;">QuickPick Notes</h1>
+    <p class="text-center text-muted"><span style="font-weight: bold;font-style: italic;">Welcome back, {{username}}!!</span></p>
     <p class="text-center text-muted">Quickly jot down your thoughts and let AI help you organize and save them.</p>
 
     <div class="mb-3">
       <label class="form-label">Your Notes (max 2500 characters)</label>
       <div class="d-flex mb-2">
-        <button class="btn btn-sm me-1 btn-format" (click)="formatText('bold')"><b>B</b></button>
-        <button class="btn btn-sm me-1 btn-format" (click)="formatText('italic')"><i>I</i></button>
-        <button class="btn btn-sm me-1 btn-format" (click)="formatText('underline')"><u>U</u></button>
         <button class="btn btn-custom-gradient" (click)="saveNote()">Save</button>
       </div>
-      <textarea
-        class="form-control"
-        contenteditable="true"
-        [(ngModel)]="note"
-        (input)="checkLength()"
-        placeholder="Type your notes here..."
-      ></textarea>
+      <textarea class="form-control" contenteditable="true" [(ngModel)]="note" (input)="checkLength()"
+        placeholder="Type your notes here..."></textarea>
       <div class="text-muted text-end mt-1">{{ charCount }} / {{ maxChars }}</div>
     </div>
 
@@ -35,13 +28,13 @@
     </div>
 
     <div *ngIf="reorganizedText" class="card mt-4 p-3">
-    <div class="d-flex justify-content-between">
+      <div class="d-flex justify-content-between">
         <h5>Re-organized Notes</h5>
         <button class="btn btn-custom-gradient mb-2" (click)="organizeWithInsights()">Generate Key Insights</button>
         <button class="btn btn-custom-gradient mb-2" (click)="copyText()">{{ copied ? 'Copied!' : 'Copy' }}</button>
-    </div>
-    <br>
-      <div class="formatted-text-output">{{ reorganizedText }}</div>
+      </div>
+      <br>
+      <div class="formatted-text-output">{{ reorganizedText}}</div>
     </div>
   </div>
 </div>
