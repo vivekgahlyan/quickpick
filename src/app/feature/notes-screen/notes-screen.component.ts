@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { FormsModule } from '@angular/forms';
 import { TypingEffectDirective } from './typing-effect.directive';
 import { MarkdownComponent } from 'ngx-markdown';
+import { CommonService } from '../../core/services/common/common.service';
 
 const genAI = new GoogleGenerativeAI('AIzaSyDJLT3-o-pgaBJtAl_T2LgW3WAh5RN0nwk');
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
@@ -16,6 +17,7 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 })
 export class NotesScreenComponent implements OnInit{
 
+  commonService = inject(CommonService);
   note: string = '';
   charCount: number = 0;
   maxChars = 2500;
@@ -24,10 +26,23 @@ export class NotesScreenComponent implements OnInit{
   copied = false;
   message: { text: string; type: string } | null = null;
   username: string = '';
+  quickpickResponse = {notes: ""};
+
+  NotesScreenComponent() {
+    this.username = sessionStorage.getItem('username') || '';
+  }
 
    ngOnInit(): void {
+
      this.username = sessionStorage.getItem('username') || '';
-  }
+
+     setTimeout(() => {
+       this.commonService.getUserNotes(this.username).subscribe(response => {
+         console.log(response);
+         this.note = response.notes;
+       });
+     }, 500);
+   }
 
   checkLength() {
     this.charCount = this.note.length;
@@ -80,8 +95,10 @@ export class NotesScreenComponent implements OnInit{
       this.showMessage('Please enter some text to save.', 'warning');
       return;
     }
-    // Replace with Firebase service call
-    console.log('Saving note:', this.note);
+    
+    this.commonService.saveUserNote(this.username, this.note).subscribe(response => {
+      console.log('Saving note:', response);
+    })
     this.showMessage('Note saved successfully!', 'success');
   }
 
