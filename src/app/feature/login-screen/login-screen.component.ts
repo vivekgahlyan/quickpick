@@ -27,7 +27,7 @@ export class LoginScreenComponent {
       setTimeout(() => {
         console.log('Navigating to dashboard...');
         this.navigateToDashboard();
-      }, 5000);
+      }, 500);
     }
   }
 
